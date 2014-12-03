@@ -13,7 +13,7 @@
       image: ami-ce5be9a6
       group: ansible-riak-yoko
       region: us-east-1
-      exact_count: 1
+      exact_count: 5
       wait: yes
       count_tag:
         Class: ansible-riak-yoko
