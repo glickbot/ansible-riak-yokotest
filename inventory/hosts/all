@@ -1,0 +1,15 @@
+[local]
+localhost gather_facts=false
+
+[riak_cluster:children]
+tag_AnisbleGroup_Node
+
+[bench:children]
+tag_AnsibleGroup_Bench
+
+[riak_servers:children]
+riak_cluster
+
+[tag_AnisbleGroup_Node]
+
+[tag_AnsibleGroup_Bench]

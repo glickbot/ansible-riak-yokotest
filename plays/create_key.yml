@@ -1,0 +1,14 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+  - name: create ec2 ansible-riak-yoko key
+    local_action:
+      module: ec2_key
+      ec2_region: us-east-1
+      name: ansible-riak-yoko
+    register: ec2_key_result
+  #- debug: var=ec2_key_result
+  - template: src=files/key.j2 dest=./aws_id_rsa mode=0600
+    when: ec2_key_result["changed"] == true

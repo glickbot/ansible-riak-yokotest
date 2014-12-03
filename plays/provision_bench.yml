@@ -1,0 +1,31 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+  - name: Create EC2 Bench
+    local_action:
+      module: ec2
+      instance_tags:
+        Class: ansible-riak-yoko
+        AnisbleGroup: Bench
+      keypair: ansible-riak-yoko
+      instance_type: c3.2xlarge
+      image: ami-ce5be9a6
+      group: ansible-riak-yoko
+      region: us-east-1
+      exact_count: 1
+      wait: yes
+      count_tag:
+        Class: ansible-riak-yoko
+        AnisbleGroup: Bench
+    register: ec2bench
+
+  - add_host: hostname="{{ item.public_dns_name }}" groupname=ec2hosts
+    with_items: ec2bench.tagged_instances
+    when: item.state == "running"
+
+  - wait_for:
+      host={{ item.public_dns_name }}
+      port=22 timeout=320 state=started
+    with_items: ec2bench.tagged_instances
+    when: item.state == "running"

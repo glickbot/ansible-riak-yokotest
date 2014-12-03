@@ -1,0 +1,28 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+  - name: create ec2 ansible-riak-yoko group
+    local_action:
+      module: ec2_group
+      ec2_region: us-east-1
+      name: ansible-riak-yoko
+      rules:
+      - proto: tcp
+        group_name: ansible-riak-yoko
+        from_port: 0
+        to_port: 65535
+      - proto: udp
+        group_name: ansible-riak-yoko
+        from_port: 0
+        to_port: 65535
+      - proto: icmp
+        group_name: ansible-riak-yoko
+        from_port: -1
+        to_port: -1
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+      description: ansible-riak-yoko group
