@@ -7,6 +7,7 @@ Setup
 =====
 
 Install python-boto
+Copy example-.boto to ~/.boto and edit with your AWS keys
 
     brew install ansible
     ansible-playbook setup.yml
