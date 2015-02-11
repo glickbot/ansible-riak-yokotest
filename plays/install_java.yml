@@ -1,0 +1,35 @@
+- hosts: riak_cluster
+  sudo: True
+  serial: 5
+  vars:
+
+
+  - download_url: http://download.oracle.com/otn-pub/java/jdk/8u5-b13/jdk-8u5-linux-x64.tar.gz
+  - accept_cookie: oraclelicense=accept-securebackup-cookie
+  - java_version: jdk1.8.0_05
+  - staging_package: /tmp/oracle_java-{{ java_version }}.tar.gz
+
+  - jvm_dir: /usr/lib/jvm
+  tasks:
+    - file: "path={{ jvm_dir }} state=directory"
+    - command: "wget -O {{ staging_package }} --no-cookies --no-check-certificate --header 'Cookie: {{ accept_cookie }}' '{{ download_url }}'"
+      args:
+        chdir: "{{ jvm_dir }}"
+        creates: "{{ staging_package }}"
+    - command: tar -xzf {{ staging_package }}
+      args:
+        chdir: "{{ jvm_dir }}"
+        creates: "{{ jvm_dir }}/{{ java_version }}"
+      notify:
+      - fix perms
+      - update alternatives
+
+  handlers:
+    - name: fix perms
+      command: find {{ jvm_dir }} -exec chown root:root {} \;
+
+    - name: update alternatives
+      command: update-alternatives --install /usr/bin/java java {{ jvm_dir }}/{{ java_version }}/bin/java 0
+
+    - name: set java
+      command: update-alternatives --set java /usr/lib/jvm/jdk1.8.0_05/bin/java

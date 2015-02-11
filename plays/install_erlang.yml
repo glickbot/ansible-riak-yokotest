@@ -1,0 +1,36 @@
+- hosts: all:!localhost
+  sudo: True
+  serial: 6
+  tasks:
+    - command: apt-get update
+    - apt: name={{ item }} state=present
+      with_items:
+      - build-essential
+      - libncurses5-dev
+      - openssl
+      - libssl-dev
+      - fop
+      - xsltproc
+      - unixodbc-dev
+      - libglib2.0-dev
+      - git
+      - autoconf
+
+    - file: path=/opt/source state=directory
+
+    - git: repo=https://github.com/basho/otp.git dest=/opt/source/otp version=OTP_R16B02_basho5
+
+    - copy: src=files/vsn.mk dest=/opt/source/otp/erts/vsn.mk
+
+    - command: ./otp_build setup
+      args:
+        chdir: /opt/source/otp
+        creates: /opt/source/otp/Makefile
+    - command: ./otp_build release -a /opt/erlang
+      args:
+        chdir: /opt/source/otp
+        creates: /opt/erlang
+    - command: make install
+      args:
+        chdir: /opt/source/otp
+        creates: /usr/local/bin/erl

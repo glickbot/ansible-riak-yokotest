@@ -1,0 +1,8 @@
+- hosts: riak_cluster
+  tasks:
+  - local_action: ec2_vol
+    args:
+      instance: "{{ ec2_id }}"
+      volume_size: 64
+      device_name: sdd
+      region: us-east-1

@@ -1,0 +1,6 @@
+riak_physical_disks:
+  - sda
+riak_ring_size: 128
+riak_tune_disks: true
+riak_tune_os: true
+riak_search: "on"

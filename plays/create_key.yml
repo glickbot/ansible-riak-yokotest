@@ -10,5 +10,5 @@
       name: ansible-riak-yoko
     register: ec2_key_result
   #- debug: var=ec2_key_result
-  - template: src=files/key.j2 dest=./aws_id_rsa mode=0600
+  - template: src=files/key.j2 dest=../aws_id_rsa mode=0600
     when: ec2_key_result["changed"] == true

@@ -1,4 +1,6 @@
-- include: create_group.yml
-- include: create_key.yml
-- include: provision_nodes.yml
-- include: provision_bench.yml
+- include: plays/create_group.yml
+- include: plays/create_key.yml
+- include: plays/provision_nodes.yml
+- include: plays/install_java.yml
+- include: plays/provision_bench.yml
+- include: plays/setup_common.yml

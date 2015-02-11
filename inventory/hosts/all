@@ -5,11 +5,11 @@ localhost gather_facts=false
 tag_AnisbleGroup_Node
 
 [bench:children]
-tag_AnsibleGroup_Bench
+tag_AnisbleGroup_Bench
 
 [riak_servers:children]
 riak_cluster
 
 [tag_AnisbleGroup_Node]
 
-[tag_AnsibleGroup_Bench]
+[tag_AnisbleGroup_Bench]
